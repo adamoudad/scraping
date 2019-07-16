@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 
@@ -20,10 +20,10 @@ def scrap_craigslist(url, headers):
     product_price = float(p.find(class_="result-price").get_text()[1:])
     product_location = p.find(class_="result-hood")
     product_location = product_location.get_text() if product_location else ""
-    print("#" * 30)
-    print(date, product_name, product_price, product_location)
+
+    if product_price < 2000 and 'lamp' in product_name.lower() and (datetime.today() - timedelta(weeks=8) < date):
+      print(date, product_name, product_price, product_location)
 
 if __name__ == "__main__":
   scrap_craigslist(URL, HEADERS)
-
 
