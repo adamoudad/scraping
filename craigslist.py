@@ -1,3 +1,4 @@
+from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
@@ -6,32 +7,23 @@ URL = 'https://tokyo.craigslist.org/d/appliances/search/ppa?lang=en&cc=us'
 HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0"}
 
 
-def scrap(url, headers):
+def scrap_craigslist(url, headers):
   page = requests.get(url, headers=headers)
-  soup = BeautifulSoup(page.content, 'html.parser')
+  soup = BeautifulSoup(page.content, 'lxml')
 
   products = soup.find_all(class_="result-info")
 
   for p in products:
-      product_name = p.find(class_="result-title").get_text()
-      product_price = p.find(class_="result-price").get_text()
-      print("#" * 30)
-      print(product_name, product_price)
-# products[0].find(class_="result-name").get_text()
-  # price = soup.find(class_="Fx4vi").get_text()
+    date = p.find(class_="result-date").get('datetime')
+    date = datetime.strptime(date, '%Y-%m-%d %H:%M')
+    product_name = p.find(class_="result-title").get_text()
+    product_price = float(p.find(class_="result-price").get_text()[1:])
+    product_location = p.find(class_="result-hood")
+    product_location = product_location.get_text() if product_location else ""
+    print("#" * 30)
+    print(date, product_name, product_price, product_location)
 
-  # return(first_prod_name)
-#   def convert_price(s):
-#     return s[0:5]
-
-#   converted_price = convert_price(price)
-
-#   if converted_price < 1:
-#     send_mail()
-#   print(converted_price)
-#   print(title.strip())
-#   send_mail() # For testing, i guess...
-
-print(scrap(URL, HEADERS))
+if __name__ == "__main__":
+  scrap_craigslist(URL, HEADERS)
 
 
