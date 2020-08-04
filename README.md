@@ -1,5 +1,5 @@
-# Collection of scaping scripts #
-Collection of scraping scripts scanning the scrambled web to scram some scoop.
+# Collection of scraping scripts #
+Collection of scraping scripts scanning the scrambled web to cram some scoop.
 
 That is a nice tongue-twister, isn't it?
 
